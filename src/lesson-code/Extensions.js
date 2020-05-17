@@ -19,34 +19,37 @@ export function showLoadingStatus(source) {
   }
 }
 
-
-//
-// export function showLoadingStatus() {
-//   return source => {
-//     return new Observable(subscriber => {
-//       newTaskStarted();
-//       const sourceSubscription = source.subscribe(subscriber);
-//       return () => {
-//         sourceSubscription.unsubscribe();
-//         existingTaskCompleted();
-//       };
-//     });
-//   };
-// }
-//
 export class PromiseWithLoadingProgress extends Promise {
   constructor(callback) {
     super((originalResolve, originalReject) => {
       const resolveSpy = (...args) => {
         originalResolve(...args);
         existingTaskCompleted();
-      };
+      }
       const rejectSpy = (...args) => {
         originalReject(...args);
         existingTaskCompleted();
-      };
-      callback(resolveSpy, rejectSpy);
-    });
+      }
+      callback(resolveSpy, rejectSpy)
+     });
     newTaskStarted();
   }
 }
+
+
+// export class PromiseWithLoadingProgress extends Promise {
+//   constructor(callback) {
+//     super((originalResolve, originalReject) => {
+//       const resolveSpy = (...args) => {
+//         originalResolve(...args);
+//         existingTaskCompleted();
+//       };
+//       const rejectSpy = (...args) => {
+//         originalReject(...args);
+//         existingTaskCompleted();
+//       };
+//       callback(resolveSpy, rejectSpy);
+//     });
+//     newTaskStarted();
+//   }
+// }
